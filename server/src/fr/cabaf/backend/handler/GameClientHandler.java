@@ -52,6 +52,8 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
 
     @Override
     public final void onConnect(Client client) {
+        System.out.println("CONN " + client.getId());
+
         Ctx ctx = onPlayerConnection(client);
         contexts.put(client.getId(), ctx);
 
@@ -60,6 +62,8 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
 
     @Override
     public final void onDisconnect(Client client) {
+        System.out.println("DCNN " + client.getId());
+
         Ctx ctx = contexts.get(client.getId());
 
         if (ctx.isPlaying()) {
@@ -73,6 +77,8 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
 
     @Override
     public final void onReceive(Client client, String str) {
+        System.out.println("RECV " + str);
+
         Ctx ctx = contexts.get(client.getId());
 
         if (str.startsWith("reconnect")) {

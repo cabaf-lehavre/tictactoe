@@ -38,6 +38,8 @@ public class Client {
     }
 
     public void sendLine(String line, boolean nl) {
+        System.out.println("SEND " + line);
+
         try {
             writer.write(line);
             if (nl) {

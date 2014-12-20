@@ -23,6 +23,8 @@ public class MorpionHandler extends GameClientHandler<MorpionHandlerContext> {
         ModeleMorpion.Etat joueurId = nextJoueurId;
         nextJoueurId = nextJoueurId.next();
 
+        System.out.println("nouveau client " + joueurId);
+
         client.sendLine("joueur_id," + nextJoueurId.ordinal());
 
         return new MorpionHandlerContext(joueurId);
@@ -45,6 +47,16 @@ public class MorpionHandler extends GameClientHandler<MorpionHandlerContext> {
             broadcast("cocher," + x + "," + y + "," + ctx.getJoueurId().ordinal());
             passTurn();
         }
+    }
+
+    @Override
+    protected void onGameStarting() {
+        broadcast("start_game");
+    }
+
+    @Override
+    protected void onGameEnding() {
+        broadcast("end_game");
     }
 
     @Override
