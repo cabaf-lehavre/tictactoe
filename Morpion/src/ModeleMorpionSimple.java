@@ -14,6 +14,11 @@ public class ModeleMorpionSimple implements ModeleMorpion {
 		initialiser();
 	}
 
+	@Override
+	public void start() {
+
+	}
+
 	public boolean estTerminee() {
 		return estGagnee() || this.nbCoups >= ModeleMorpion.TAILLE * ModeleMorpion.TAILLE;
 	}

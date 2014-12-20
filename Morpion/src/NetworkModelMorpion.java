@@ -14,6 +14,8 @@ public class NetworkModelMorpion extends Thread implements ModeleMorpion {
     }
 
     private void onReceive(String line) {
+        System.out.println("RECV " + line);
+
         String[] args = line.split(",");
         
         if (args[0].equalsIgnoreCase("end")) {

@@ -14,7 +14,12 @@ public interface ModeleMorpion {
         }
     }
 
-	int TAILLE = 3;	
+	int TAILLE = 3;
+
+    /**
+     * Notify from owner that the game must initialize.
+     */
+    void start();
 
 	public void cocher(int x, int y); 
 

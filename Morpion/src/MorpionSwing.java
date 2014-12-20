@@ -36,6 +36,7 @@ public class MorpionSwing implements ModeleMorpionListener {
 	public MorpionSwing(ModeleMorpion modele) {
 		this.modele = modele;
         this.modele.setListener(this);
+		this.modele.start();
 
 		for (int i = 0; i < this.cases.length; i++) {
 			for (int j = 0; j < this.cases[i].length; j++) {
@@ -93,7 +94,9 @@ public class MorpionSwing implements ModeleMorpionListener {
 
     @Override
     public void setCase(int x, int y, ModeleMorpion.Etat etat) {
-        cases[x][y].setIcon(images.get(etat));
+		System.out.println("lol");
+		cases[x][y].setIcon(images.get(etat));
+		fenetre.repaint();
     }
 
     public void recommencer() {
