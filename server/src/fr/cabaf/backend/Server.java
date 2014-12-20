@@ -64,6 +64,7 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
+        System.out.printf("LSTN %d\n", listener.getLocalPort());
         try {
             while (!listener.isClosed()) {
                 Socket socket = listener.accept();
