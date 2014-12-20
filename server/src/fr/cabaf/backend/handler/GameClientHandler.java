@@ -169,7 +169,9 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
         turnList.offerLast(this.current);
         this.current = null;
 
-        if (!isGameValid()) {
+        if (isGameValid()) {
+            doStartGameTurn();
+        } else {
             doEndGame();
         }
     }
