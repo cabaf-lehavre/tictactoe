@@ -21,6 +21,9 @@ public class ClientRunner implements Runnable {
             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             while (!socket.isClosed()) {
                 String line = reader.readLine();
+                if (line == null) {
+                    break;
+                }
                 try {
                     client.getHandler().onReceive(client, line);
                 } catch (Exception e) {
@@ -32,6 +35,7 @@ public class ClientRunner implements Runnable {
         } catch (IOException ioe) {
             throw new Error(ioe);
         } finally {
+            try { socket.close(); }catch(IOException ignored){}
             client.getHandler().onDisconnect(client);
             Server.getInstance().removeClient(client);
         }
