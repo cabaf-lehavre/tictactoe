@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Morpion:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Morpion_jar</output-path>
+    <root id="archive" name="Morpion.jar">
+      <element id="module-output" name="Morpion" />
+    </root>
+  </artifact>
+</component>
