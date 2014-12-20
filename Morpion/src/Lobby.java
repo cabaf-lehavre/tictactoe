@@ -45,27 +45,47 @@ public class Lobby extends JFrame implements ActionListener {
         int port = Integer.parseInt(this.port.getText());
 
         StatusWindow w = new StatusWindow("Connection...");
+        new ConnectThread(address, port, w).start();
+        this.dispose();
+    }
 
-        try {
-            Client client = new Client(address, port);
-            ModeleMorpion.Etat joueur;
+    static class ConnectThread extends Thread {
+        private final String address;
+        private final int port;
+        private final StatusWindow status;
 
-            BufferedReader reader = client.createBufferedReader();
-            while (true) {
-                String str = reader.readLine();
+        ConnectThread(String address, int port, StatusWindow status) {
+            this.address = address;
+            this.port = port;
+            this.status = status;
+        }
 
-                if (str.startsWith("joueur_id")) {
-                    int index = Integer.parseInt(str.substring("joueur_id".length() + 1));
-                    joueur = ModeleMorpion.Etat.values()[index];
-                    break;
+        @Override
+        public void run() {
+            try {
+                Client client = new Client(address, port);
+                ModeleMorpion.Etat joueur = null;
+
+                BufferedReader reader = client.createBufferedReader();
+                while (true) {
+                    String str = reader.readLine();
+
+                    if (str.startsWith("joueur_id")) {
+                        int index = Integer.parseInt(str.substring("joueur_id".length() + 1));
+                        joueur = ModeleMorpion.Etat.values()[index];
+                        status.setText("Démarrage...");
+                        client.println("enter");
+                    } else if (str.startsWith("start_game")) {
+                        break;
+                    }
+                    // TODO couldnt join the game
                 }
-                // TODO couldnt join the game
-            }
 
-            w.dispose();
-            new MorpionSwing(new NetworkModelMorpion(client, joueur));
-        } catch (IOException e) {
-            w.setText(e.getLocalizedMessage());
+                new MorpionSwing(new NetworkModelMorpion(client, joueur));
+                status.dispose();
+            } catch (IOException e) {
+                status.setText(e.getLocalizedMessage());
+            }
         }
     }
 
