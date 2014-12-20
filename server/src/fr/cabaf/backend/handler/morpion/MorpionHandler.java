@@ -25,7 +25,7 @@ public class MorpionHandler extends GameClientHandler<MorpionHandlerContext> {
 
         System.out.println("nouveau client " + joueurId);
 
-        client.sendLine("joueur_id," + nextJoueurId.ordinal());
+        client.sendLine("joueur_id," + joueurId.ordinal());
 
         return new MorpionHandlerContext(joueurId);
     }
@@ -56,7 +56,7 @@ public class MorpionHandler extends GameClientHandler<MorpionHandlerContext> {
 
     @Override
     protected void onGameEnding() {
-        broadcast("end_game");
+        broadcast("end_game," + morpion.getGagnant().ordinal());
     }
 
     @Override
