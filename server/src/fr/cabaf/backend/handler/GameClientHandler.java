@@ -34,6 +34,7 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
 
     // true if game is running, false otherwise
     private boolean running;
+    private LinkedList<Client> turnList = new LinkedList<Client>();
     private Client current;
 
     protected final List<Client> getLobby() {
@@ -146,13 +147,14 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
             throw new IllegalStateException("game is already running");
         }
         running = true;
+        turnList.addAll(lobby);
         onGameStarting();
 
         doStartGameTurn();
     }
 
     private void doStartGameTurn() {
-        Client client = lobby.pollFirst();
+        Client client = turnList.pollFirst();
         Ctx ctx = contexts.get(client.getId());
 
         this.current = client;
@@ -164,7 +166,7 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
         Ctx ctx = contexts.get(client.getId());
         onGameTurnEnding(client, ctx);
 
-        lobby.offerLast(this.current);
+        turnList.offerLast(this.current);
         this.current = null;
 
         if (!isGameValid()) {
@@ -174,6 +176,7 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
 
     private void doEndGame() {
         running = false;
+        turnList.clear();
         onGameEnding();
     }
 }
