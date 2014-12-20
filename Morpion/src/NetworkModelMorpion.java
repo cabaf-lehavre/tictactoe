@@ -17,10 +17,6 @@ public class NetworkModelMorpion extends Thread implements ModeleMorpion {
         System.out.println("RECV " + line);
 
         String[] args = line.split(",");
-        
-        if (args[0].equalsIgnoreCase("end")) {
-            gagnant = Etat.values()[Integer.parseInt(args[1])];
-        }
 
         if (args[0].equalsIgnoreCase("cocher")) {
             int x = Integer.parseInt(args[1]);
@@ -28,6 +24,12 @@ public class NetworkModelMorpion extends Thread implements ModeleMorpion {
             Etat j = Etat.values()[Integer.parseInt(args[3])];
 
             listener.setCase(x, y, j);
+        }
+
+        if (args[0].equalsIgnoreCase("end_game")) {
+            Etat j = Etat.values()[Integer.parseInt(args[1])];
+
+            listener.endGame(j);
         }
     }
 
@@ -71,7 +73,6 @@ public class NetworkModelMorpion extends Thread implements ModeleMorpion {
 
     @Override
     public Etat getValeur(int x, int y) {
-//        throw new IllegalStateException("not implemented");
         return Etat.VIDE;
     }
 

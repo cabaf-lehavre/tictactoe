@@ -99,7 +99,17 @@ public class MorpionSwing implements ModeleMorpionListener {
 		fenetre.repaint();
     }
 
-    public void recommencer() {
+	@Override
+	public void endGame(ModeleMorpion.Etat gagnant) {
+		if (gagnant == modele.getJoueur()) {
+			new StatusWindow("Vous avez gagné \\o/");
+		} else {
+			new StatusWindow("Vous avez perdu :-(");
+		}
+		fenetre.dispose();
+	}
+
+	public void recommencer() {
 		this.modele.recommencer();
 
 		// Vider les cases
