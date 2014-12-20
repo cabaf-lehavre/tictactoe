@@ -22,8 +22,8 @@ public interface ModeleMorpion {
 
 	public void cocher(int x, int y, Etat joueur);
 
-	public boolean estTerminee();
+	boolean estTerminee();
 
-	public boolean estGagnee();
+	Etat getGagnant();
 
 }

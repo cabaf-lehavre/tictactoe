@@ -4,7 +4,7 @@ package fr.cabaf.backend.handler.morpion;
 public class ModeleMorpionSimple implements ModeleMorpion {
 	private Etat[][] cases;
 	private int nbCoups;
-	private boolean gagnee;
+	private Etat gagnant; // nullable
 
 	public ModeleMorpionSimple() {
 		this.cases = new Etat[ModeleMorpion.TAILLE][ModeleMorpion.TAILLE];
@@ -22,36 +22,73 @@ public class ModeleMorpionSimple implements ModeleMorpion {
 			}
 		}
 		this.nbCoups = 0;
-		gagnee = false;
 	}
 
 	private boolean estVide(int i, int j) {
 		return getValeur(i,j) == Etat.VIDE;
 	}
 
-	private void jouer(int i, int j, Etat joueur) {
-		this.cases[i][j] = joueur;
+	private void jouer(int x, int y, Etat joueur) {
+		this.cases[x][y] = joueur;
 		this.nbCoups++;
 
-		gagnee = gagnee ||
-				((cases[i][0] == cases[i][1]	// ligne pleine
-						&& cases[i][1] == cases[i][2])
-						|| (cases[0][j] == cases[1][j]	// colonne pleine
-						&& cases[1][j] == cases[2][j])
-						|| (i == j	// première diagonale pleine
-						&& cases[0][0] == cases[1][1]
-						&& cases[1][1] == cases[2][2])
-						|| (i + j == 2	// deuxième diagonale pleine
-						&& cases[0][2] == cases[1][1]
-						&& cases[1][1] == cases[2][0]));
+		Etat gagnant = null;
+		for (int i = 0; i < 2; i++) {
+			gagnant = gagnantSurLigne(i);
+			if (gagnant != null) {
+				break;
+			}
+
+			gagnant = gagnantSurColonne(i);
+			if (gagnant != null) {
+				break;
+			}
+		}
+
+		if (gagnant == null) {
+			gagnant = gagnantSurDiagonale(true);
+		}
+		if (gagnant == null) {
+			gagnant = gagnantSurDiagonale(false);
+		}
+
+		this.gagnant = gagnant;
+	}
+
+	private Etat gagnantSurLigne(int i) {
+		if (cases[i][0] == cases[i][1] && cases[i][1] == cases[i][2] && cases[i][0] != Etat.VIDE) {
+			return cases[i][0];
+		}
+		return null;
+	}
+
+	private Etat gagnantSurColonne(int j) {
+		if (cases[0][j] == cases[1][j] && cases[1][j] == cases[2][j] && cases[0][j] != Etat.VIDE) {
+			return cases[0][j];
+		}
+		return null;
+	}
+
+	private Etat gagnantSurDiagonale(boolean descendante) {
+		if (descendante && cases[0][0] == cases[1][1] && cases[1][1] == cases[2][2] && cases[1][1] != Etat.VIDE) {
+			return cases[1][1];
+		}
+		if (!descendante && cases[2][0] == cases[1][1] && cases[1][1] == cases[0][2] && cases[1][1] != Etat.VIDE) {
+			return cases[1][1];
+		}
+		return null;
 	}
 
 	public boolean estTerminee() {
-		return estGagnee() || this.nbCoups >= ModeleMorpion.TAILLE * ModeleMorpion.TAILLE;
+		return gagnant != null || this.nbCoups >= ModeleMorpion.TAILLE * ModeleMorpion.TAILLE;
 	}
 
-	public boolean estGagnee() {
-		return gagnee;
+	@Override
+	public Etat getGagnant() {
+		if (gagnant == null) {
+			throw new IllegalStateException("there is no or never be a winner");
+		}
+		return gagnant;
 	}
 
 	public void cocher(int x, int y, Etat joueur) {
