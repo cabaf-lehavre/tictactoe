@@ -1,7 +1,5 @@
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class NetworkModelMorpion extends Thread implements ModeleMorpion {
     private final Client client;
@@ -9,9 +7,6 @@ public class NetworkModelMorpion extends Thread implements ModeleMorpion {
 
     private ModeleMorpionListener listener;
     private Etat gagnant;
-
-    private final Lock endWaiter = new ReentrantLock();
-    private final Lock transactionWaiter = new ReentrantLock();
 
     public NetworkModelMorpion(Client client, Etat joueur) {
         this.client = client;
@@ -22,17 +17,15 @@ public class NetworkModelMorpion extends Thread implements ModeleMorpion {
         String[] args = line.split(",");
         
         if (args[0].equalsIgnoreCase("end")) {
-            gagnant = args[1].equalsIgnoreCase("1") ? Etat.CROIX : Etat.ROND;
-            endWaiter.unlock();
+            gagnant = Etat.values()[Integer.parseInt(args[1])];
         }
 
-        if (args[0].equalsIgnoreCase("set")) {
+        if (args[0].equalsIgnoreCase("cocher")) {
             int x = Integer.parseInt(args[1]);
             int y = Integer.parseInt(args[2]);
-            Etat j = args[1].equalsIgnoreCase("1") ? Etat.CROIX : Etat.ROND;
+            Etat j = Etat.values()[Integer.parseInt(args[3])];
 
             listener.setCase(x, y, j);
-            transactionWaiter.unlock();
         }
     }
 
@@ -51,10 +44,7 @@ public class NetworkModelMorpion extends Thread implements ModeleMorpion {
 
     @Override
     public void cocher(int x, int y) {
-        transactionWaiter.lock();
         client.println(String.format("set,%d,%d", x, y));
-        transactionWaiter.lock();
-        transactionWaiter.unlock();
     }
 
     @Override

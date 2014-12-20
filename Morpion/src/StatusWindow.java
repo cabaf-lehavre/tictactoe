@@ -7,6 +7,7 @@ public class StatusWindow extends JFrame {
         add(label);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(200, 50);
     }
 
     public StatusWindow(String text) {

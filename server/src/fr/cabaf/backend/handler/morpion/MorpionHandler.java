@@ -42,6 +42,7 @@ public class MorpionHandler extends GameClientHandler<MorpionHandlerContext> {
                 y = Integer.parseInt(args[2]);
 
             morpion.cocher(x, y, ctx.getJoueurId());
+            broadcast("cocher," + x + "," + y + "," + ctx.getJoueurId().ordinal());
             passTurn();
         }
     }

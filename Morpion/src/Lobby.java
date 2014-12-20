@@ -13,16 +13,24 @@ public class Lobby extends JFrame implements ActionListener {
 
     public void display() {
         connect.addActionListener(this);
+        connect.setText("Se Connecter");
+
+        address.setText("localhost");
+        port.setText("5555");
+
+        JPanel panel = new JPanel(new GridLayout(2, 2));
+        panel.add(new JLabel("Adresse"));
+        panel.add(address);
+        panel.add(new JLabel("Port"));
+        panel.add(port);
 
         Container ctnr = getContentPane();
-        ctnr.setLayout(new GridLayout(3, 2));
-
-        ctnr.add(new JLabel("Adresse"));
-        ctnr.add(address);
-        ctnr.add(new JLabel("Port"));
-
+        ctnr.setLayout(new FlowLayout(FlowLayout.CENTER));
+        ctnr.add(panel);
         ctnr.add(connect);
 
+        setTitle("Morpion");
+        setSize(200, 100);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -40,14 +48,22 @@ public class Lobby extends JFrame implements ActionListener {
 
         try {
             Client client = new Client(address, port);
+            ModeleMorpion.Etat joueur;
 
             BufferedReader reader = client.createBufferedReader();
-            ModeleMorpion.Etat joueur = ModeleMorpion.Etat.valueOf(reader.readLine());
+            while (true) {
+                String str = reader.readLine();
 
-            NetworkModelMorpion modele = new NetworkModelMorpion(client, joueur);
+                if (str.startsWith("joueur_id")) {
+                    int index = Integer.parseInt(str.substring("joueur_id".length() + 1));
+                    joueur = ModeleMorpion.Etat.values()[index];
+                    break;
+                }
+                // TODO couldnt join the game
+            }
 
             w.dispose();
-            new MorpionSwing(modele);
+            new MorpionSwing(new NetworkModelMorpion(client, joueur));
         } catch (IOException e) {
             w.setText(e.getLocalizedMessage());
         }
