@@ -9,6 +9,7 @@ public interface ModeleMorpion {
 
 		public Etat next() {
 			if (this == CROIX) return ROND;
+			if (this == ROND)  return CROIX;
 			throw new IllegalStateException();
 		}
 
