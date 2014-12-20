@@ -5,7 +5,7 @@ import fr.cabaf.backend.handler.GameClientHandler;
 
 public class MorpionHandler extends GameClientHandler<MorpionHandlerContext> {
 
-    private ModeleMorpion morpion = new ModeleMorpionSimple();
+    private ModeleMorpion morpion;
     private ModeleMorpion.Etat nextJoueurId = ModeleMorpion.Etat.CROIX;
 
     @Override
@@ -51,6 +51,7 @@ public class MorpionHandler extends GameClientHandler<MorpionHandlerContext> {
 
     @Override
     protected void onGameStarting() {
+        morpion = new ModeleMorpionSimple();
         broadcast("start_game");
     }
 
