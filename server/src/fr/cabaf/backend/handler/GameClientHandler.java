@@ -88,7 +88,7 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
             enter(client, ctx);
         } else if (str.startsWith("lobby_status")) {
             lobbyStatus(client);
-        } else {
+        } else if (client == this.current) {
             onPlayerReceive(client, ctx, str);
         }
     }
