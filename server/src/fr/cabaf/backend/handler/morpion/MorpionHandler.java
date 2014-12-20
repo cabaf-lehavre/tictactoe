@@ -5,12 +5,17 @@ import fr.cabaf.backend.handler.GameClientHandler;
 
 public class MorpionHandler extends GameClientHandler<MorpionHandlerContext> {
 
-    private ModeleMorpion morpion;
+    private ModeleMorpion morpion = new ModeleMorpionSimple();
     private ModeleMorpion.Etat nextJoueurId = ModeleMorpion.Etat.CROIX;
 
     @Override
     protected int getGameNrPlayers() {
         return 2;
+    }
+
+    @Override
+    protected boolean isGameValid() {
+        return !morpion.estTerminee();
     }
 
     @Override
@@ -29,46 +34,25 @@ public class MorpionHandler extends GameClientHandler<MorpionHandlerContext> {
     }
 
     @Override
-    protected void onPlayerDisconnection(Client client, MorpionHandlerContext ctx) {
+    protected void onPlayerReceive(Client client, MorpionHandlerContext ctx, String msg) {
+        if (msg.startsWith("cocher")) {
+            String[] args = msg.split(",");
 
-    }
+            int x = Integer.parseInt(args[1]),
+                y = Integer.parseInt(args[2]);
 
-    @Override
-    protected void onPlayerEntering(Client client, MorpionHandlerContext ctx) {
-
-    }
-
-    @Override
-    protected void onPlayerQuitting(Client client, MorpionHandlerContext ctx) {
-
-    }
-
-    @Override
-    protected void onGameStarting() {
-        morpion = new ModeleMorpionSimple();
-
-        for (Client client : getLobby()) {
-            client.sendLine("game_start");
+            morpion.cocher(x, y, ctx.getJoueurId());
+            passTurn();
         }
     }
 
     @Override
-    protected void onGameEnding() {
-        morpion = null;
-    }
-
-    @Override
-    protected boolean isGameValid() {
-        return !morpion.estTerminee();
-    }
-
-    @Override
     protected void onGameTurnStarting(Client client, MorpionHandlerContext ctx) {
-
+        broadcast("start_turn," + ctx.getJoueurId().ordinal());
     }
 
     @Override
     protected void onGameTurnEnding(Client client, MorpionHandlerContext ctx) {
-
+        broadcast("end_turn," + ctx.getJoueurId().ordinal());
     }
 }

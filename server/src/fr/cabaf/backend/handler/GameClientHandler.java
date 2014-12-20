@@ -7,18 +7,21 @@ import java.util.*;
 
 public abstract class GameClientHandler<Ctx extends BaseGameContext> implements ClientHandler {
     protected abstract Ctx onPlayerConnection(Client client);
-    protected abstract Ctx onPlayerReconnection(Client client, Ctx ctx, Ctx oldCtx);
-    protected abstract void onPlayerDisconnection(Client client, Ctx ctx);
-    protected abstract void onPlayerEntering(Client client, Ctx ctx);
-    protected abstract void onPlayerQuitting(Client client, Ctx ctx);
+    protected Ctx onPlayerReconnection(Client client, Ctx ctx, Ctx oldCtx) {
+        return ctx;
+    }
+    protected void onPlayerDisconnection(Client client, Ctx ctx) {}
+    protected void onPlayerEntering(Client client, Ctx ctx) {}
+    protected void onPlayerQuitting(Client client, Ctx ctx) {}
+    protected void onPlayerReceive(Client client, Ctx ctx, String msg) {}
 
-    protected abstract void onGameStarting();
-    protected abstract void onGameEnding();
+    protected void onGameStarting() {}
+    protected void onGameEnding() {}
     protected abstract boolean isGameValid();
     protected abstract int getGameNrPlayers();
 
-    protected abstract void onGameTurnStarting(Client client, Ctx ctx);
-    protected abstract void onGameTurnEnding(Client client, Ctx ctx);
+    protected void onGameTurnStarting(Client client, Ctx ctx) {}
+    protected void onGameTurnEnding(Client client, Ctx ctx) {}
 
     // contexts are remembered from sessions to sessions
     // they're only removed when reconnecting
@@ -39,6 +42,12 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
 
     protected final boolean isLobbyFull() {
         return lobby.size() >= getGameNrPlayers();
+    }
+
+    protected final void broadcast(String line) {
+        for (Client client : getLobby()) {
+            client.sendLine(line);
+        }
     }
 
     @Override
@@ -73,6 +82,8 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
             enter(client, ctx);
         } else if (str.startsWith("lobby_status")) {
             lobbyStatus(client);
+        } else {
+            onPlayerReceive(client, ctx, str);
         }
     }
 
