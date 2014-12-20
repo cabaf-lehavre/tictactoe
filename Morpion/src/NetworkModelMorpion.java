@@ -44,7 +44,7 @@ public class NetworkModelMorpion extends Thread implements ModeleMorpion {
 
     @Override
     public void cocher(int x, int y) {
-        client.println(String.format("set,%d,%d", x, y));
+        client.println("cocher," + x + "," + y);
     }
 
     @Override
@@ -69,7 +69,8 @@ public class NetworkModelMorpion extends Thread implements ModeleMorpion {
 
     @Override
     public Etat getValeur(int x, int y) {
-        throw new IllegalStateException("not implemented");
+//        throw new IllegalStateException("not implemented");
+        return Etat.VIDE;
     }
 
     @Override
