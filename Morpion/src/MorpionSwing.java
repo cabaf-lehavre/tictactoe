@@ -150,7 +150,6 @@ public class MorpionSwing implements ModeleMorpionListener {
 		public void mouseClicked(MouseEvent e) {
 
 				modele.cocher(x, y);
-				cases[x][y].setIcon(images.get(modele.getValeur(x, y)));
 				joueur.setIcon(images.get(modele.getJoueur()));
 
 				// Fin de partie ?

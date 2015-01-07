@@ -33,7 +33,7 @@ public class ModeleMorpionSimple implements ModeleMorpion {
 		this.nbCoups++;
 
 		Etat gagnant = null;
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 3; i++) {
 			gagnant = gagnantSurLigne(i);
 			if (gagnant != null) {
 				break;
