@@ -26,4 +26,7 @@ public interface ModeleMorpion {
 
 	Etat getGagnant();
 
+    int getTaille();
+    Etat getValue(int x,int y);
+
 }

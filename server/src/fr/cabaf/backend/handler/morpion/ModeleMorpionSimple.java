@@ -1,6 +1,8 @@
 package fr.cabaf.backend.handler.morpion;
 
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
+
 public class ModeleMorpionSimple implements ModeleMorpion {
 	private Etat[][] cases;
 	private int nbCoups;
@@ -11,7 +13,17 @@ public class ModeleMorpionSimple implements ModeleMorpion {
 		initialiser();
 	}
 
-	public Etat getValeur(int x, int y) {
+    @Override
+    public int getTaille() {
+        return ModeleMorpion.TAILLE;
+    }
+
+    @Override
+    public Etat getValue(int x,int y) {
+        return cases[x][y];
+    }
+
+    public Etat getValeur(int x, int y) {
 		return this.cases[x][y];
 	}
 
