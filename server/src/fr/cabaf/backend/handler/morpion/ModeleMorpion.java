@@ -20,7 +20,7 @@ public interface ModeleMorpion {
 
 	int TAILLE = 3;
 
-	public void cocher(int x, int y, Etat joueur);
+	boolean cocher(int x, int y, Etat joueur);
 
 	boolean estTerminee();
 

@@ -91,12 +91,13 @@ public class ModeleMorpionSimple implements ModeleMorpion {
 		return gagnant;
 	}
 
-	public void cocher(int x, int y, Etat joueur) {
+	public boolean cocher(int x, int y, Etat joueur) {
 		if (this.estTerminee() || !this.estVide(x, y)) {
-			return;
+			return false;
 		}
 
 		this.jouer(x, y, joueur);
+        return true;
 	}
 
 }
