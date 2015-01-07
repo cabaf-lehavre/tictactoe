@@ -12,7 +12,7 @@ public class IAMorpion implements ClientHandler {
     private Client client;
     private ModeleMorpion.Etat clientId;
     private ModeleMorpion morpion = new ModeleMorpionSimple();
-    private IA ia = new IA(morpion, id);
+    private IA ia;
     private Random random = new Random(System.nanoTime());
     private ModeleMorpion.Etat currentId;
 
@@ -28,7 +28,7 @@ public class IAMorpion implements ClientHandler {
         boolean premier = random.nextBoolean();
         this.currentId = ModeleMorpion.Etat.CROIX;
         this.clientId = premier ? ModeleMorpion.Etat.CROIX : ModeleMorpion.Etat.ROND;
-
+        ia = new IA(morpion, !premier ? ModeleMorpion.Etat.CROIX : ModeleMorpion.Etat.ROND);
         client.sendLine("joueur_id," + clientId.ordinal());
         client.sendLine("start_game");
 

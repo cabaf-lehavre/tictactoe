@@ -12,7 +12,6 @@ public class ModeleMorpionSimple implements ModeleMorpion {
 		this.cases = new Etat[ModeleMorpion.TAILLE][ModeleMorpion.TAILLE];
 		initialiser();
 	}
-
     @Override
     public int getTaille() {
         return ModeleMorpion.TAILLE;
@@ -92,7 +91,7 @@ public class ModeleMorpionSimple implements ModeleMorpion {
 	}
 
 	public boolean estTerminee() {
-		return gagnant != null || this.nbCoups >= ModeleMorpion.TAILLE * ModeleMorpion.TAILLE;
+		return gagnant != null || this.nbCoups > ModeleMorpion.TAILLE * ModeleMorpion.TAILLE;
 	}
 
 	@Override
