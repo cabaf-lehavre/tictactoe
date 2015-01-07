@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * @author Brieuc DE TAPPIE
  */
-public class IAMorpion implements ClientHandler {
+public class IAMorpionHandler implements ClientHandler {
     private Client client;
     private ModeleMorpion.Etat clientId;
     private ModeleMorpion morpion = new ModeleMorpionSimple();
@@ -59,6 +59,7 @@ public class IAMorpion implements ClientHandler {
             if (morpion.cocher(x, y, clientId)) {
                 client.sendLine("cocher," + x + "," + y + "," + clientId.ordinal());
                 passTurn();
+                currentId.next();
             }
         }
     }
@@ -75,11 +76,12 @@ public class IAMorpion implements ClientHandler {
             // client plays
         } else {
             ia.play();
-            client.sendLine("cocher,,,");
+            client.sendLine("cocher," + ia.getLastPlayedX() + "," +ia.getLastPlayedY() + "," +ia.getId().ordinal());
+            currentId.next();
         }
 
         if (morpion.estTerminee()) {
-            client.sendLine("end_game,<<gagnant>>");
+            client.sendLine("end_game,"+morpion.getGagnant().ordinal());
             client.close();
 
             cleanup();

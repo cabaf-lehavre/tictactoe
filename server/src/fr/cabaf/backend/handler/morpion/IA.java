@@ -15,19 +15,34 @@ public class IA {
 
     public int getLastPlayedX() {return  lastX;}
     public int getLastPlayedY() {return  lastY;}
+    public ModeleMorpion.Etat getId() {return id;}
 
     public void play() {
         if (ModeleMorpion.Etat.VIDE.equals(modele.getValue(1,1))) {
           aJouer(1,1);
             return;
         }
+        int[] menace = estMenacer();
+        if(!(menace[0]==-1 || menace[1]==-1)){
+            aJouer(menace[0],menace[1]);
+            return;
+        }
 
+        //Amelioration possible
+        for(int i=0;i<ModeleMorpion.TAILLE;i++) {
+            for(int j=0;j<ModeleMorpion.TAILLE;j++) {
+                if(aJouer(i,j)) return;
+            }
+
+        }
 
     }
-    public void aJouer(int x,int y) {
-        modele.cocher(x,y,id) ;
+    public boolean aJouer(int x,int y) {
         lastX=x;
         lastY=y;
+        boolean retour= modele.cocher(x,y,id);
+        System.out.println(retour);
+        return retour;
     }
     public int[] estMenacer(){
         int nbPionAdv=0;
@@ -64,7 +79,16 @@ public class IA {
             }
         }
         if(nbPionAdv==2)return caseMenacer;
-
+        caseMenacer[0]=-1;
+        for(int i=ModeleMorpion.TAILLE,j=ModeleMorpion.TAILLE;i>-1;i--,j--) {
+            if(modele.getValue(i,j)!=id && modele.getValue(j,i)!=ModeleMorpion.Etat.VIDE) nbPionAdv++;
+            if(modele.getValue(i,j)==ModeleMorpion.Etat.VIDE){
+                caseMenacer[0]=i;
+                caseMenacer[1]=j;
+            }
+        }
+        if(nbPionAdv==2)return caseMenacer;
+        caseMenacer[0]=-1;
         return caseMenacer;
     }
 }
