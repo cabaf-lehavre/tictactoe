@@ -20,6 +20,7 @@ public class ServerApp {
 
         Server server = new Server(new ClientThreadFactory(), port);
         server.setDefaultHandler(new IAMorpionHandler());
+       // server.setDefaultHandler(new MorpionHandler());
         Server.setInstance(server);
 //        Thread thread = new Thread(server);
 //        thread.setDaemon(true);

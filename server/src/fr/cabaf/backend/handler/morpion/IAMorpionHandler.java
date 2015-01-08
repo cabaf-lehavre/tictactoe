@@ -24,11 +24,13 @@ public class IAMorpionHandler implements ClientHandler {
         }
 
         this.client = client;
-
-        boolean premier = random.nextBoolean();
+        //Debug boolean
+        //boolean premier = random.nextBoolean();
         this.currentId = ModeleMorpion.Etat.CROIX;
-        this.clientId = premier ? ModeleMorpion.Etat.CROIX : ModeleMorpion.Etat.ROND;
-        ia = new IA(morpion, !premier ? ModeleMorpion.Etat.CROIX : ModeleMorpion.Etat.ROND);
+        //this.clientId = premier ? ModeleMorpion.Etat.CROIX : ModeleMorpion.Etat.ROND;
+        //ia = new IA(morpion, !premier ? ModeleMorpion.Etat.CROIX : ModeleMorpion.Etat.ROND);
+        this.clientId = ModeleMorpion.Etat.CROIX;
+        ia = new IA(morpion, ModeleMorpion.Etat.ROND);
         client.sendLine("joueur_id," + clientId.ordinal());
         client.sendLine("start_game");
 
@@ -58,8 +60,10 @@ public class IAMorpionHandler implements ClientHandler {
 
             if (morpion.cocher(x, y, clientId)) {
                 client.sendLine("cocher," + x + "," + y + "," + clientId.ordinal());
+                client.sendLine("end_turn," + currentId.ordinal());
+                currentId = currentId.next();
                 passTurn();
-                currentId.next();
+
             }
         }
     }
@@ -72,12 +76,11 @@ public class IAMorpionHandler implements ClientHandler {
     private void passTurn() {
         client.sendLine("start_turn," + currentId.ordinal());
 
-        if (currentId == clientId) {
-            // client plays
-        } else {
+        if (!(currentId == clientId)) {
             ia.play();
             client.sendLine("cocher," + ia.getLastPlayedX() + "," +ia.getLastPlayedY() + "," +ia.getId().ordinal());
-            currentId.next();
+            client.sendLine("end_turn," + currentId.ordinal());
+            currentId = currentId.next();
         }
 
         if (morpion.estTerminee()) {

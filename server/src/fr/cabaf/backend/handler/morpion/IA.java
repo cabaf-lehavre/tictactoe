@@ -1,7 +1,7 @@
 package fr.cabaf.backend.handler.morpion;
 
 /**
- * Created by db131357 on 07/01/15.
+ * Created by Brieuc de Tappie on 07/01/15.
  */
 public class IA {
     private final ModeleMorpion modele;
@@ -24,10 +24,9 @@ public class IA {
         }
         int[] menace = estMenacer();
         if(!(menace[0]==-1 || menace[1]==-1)){
-            aJouer(menace[0],menace[1]);
+            aJouer(menace[0], menace[1]);
             return;
         }
-
         //Amelioration possible
         for(int i=0;i<ModeleMorpion.TAILLE;i++) {
             for(int j=0;j<ModeleMorpion.TAILLE;j++) {
@@ -45,7 +44,7 @@ public class IA {
         return retour;
     }
     public int[] estMenacer(){
-        int nbPionAdv=0;
+        int nbPionAdv;
         int[] caseMenacer= new int[2];
         for(int i=0;i<ModeleMorpion.TAILLE;i++) {
             nbPionAdv=0;
@@ -80,7 +79,7 @@ public class IA {
         }
         if(nbPionAdv==2)return caseMenacer;
         caseMenacer[0]=-1;
-        for(int i=ModeleMorpion.TAILLE,j=ModeleMorpion.TAILLE;i>-1;i--,j--) {
+        for(int i=ModeleMorpion.TAILLE-1,j=ModeleMorpion.TAILLE-1;i>-1;i=i-1,j=j-1) {
             if(modele.getValue(i,j)!=id && modele.getValue(j,i)!=ModeleMorpion.Etat.VIDE) nbPionAdv++;
             if(modele.getValue(i,j)==ModeleMorpion.Etat.VIDE){
                 caseMenacer[0]=i;
