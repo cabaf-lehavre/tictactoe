@@ -1,5 +1,6 @@
 package fr.cabaf.backend;
 
+import fr.cabaf.backend.handler.morpion.IAMorpionHandler;
 import fr.cabaf.backend.handler.morpion.MorpionHandler;
 
 import java.io.IOException;
@@ -18,7 +19,8 @@ public class ServerApp {
         }
 
         Server server = new Server(new ClientThreadFactory(), port);
-        server.setDefaultHandler(new MorpionHandler());
+        server.setDefaultHandler(new IAMorpionHandler());
+       // server.setDefaultHandler(new MorpionHandler());
         Server.setInstance(server);
 //        Thread thread = new Thread(server);
 //        thread.setDaemon(true);
