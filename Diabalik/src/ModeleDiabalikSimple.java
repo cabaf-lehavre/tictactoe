@@ -2,7 +2,7 @@
  * Created by Cyril Alves on 09/01/2015.
  */
 
-public class ModeleDiabalikSimple implements ModeleDiabalik {
+public class ModeleDiabalikSimple {
 
     Case[][] plateau = new Case[7][7];
     public ModeleDiabalikSimple()
@@ -24,8 +24,6 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
         }
         plateau[6][3].setBalle(true);
     }
-
-    //public boolean estTerminee(){return !aGagne();}//TODO:A faire
 
     public String toString()
     {
