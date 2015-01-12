@@ -20,4 +20,5 @@ public class Case {
         public int getProprietaire(){return proprietaire;}
 
         public boolean getBalle()   {return estBalle;}
+
 }

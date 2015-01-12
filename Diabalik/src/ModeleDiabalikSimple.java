@@ -99,49 +99,5 @@ public class ModeleDiabalikSimple {
         return false;
     }
     public boolean cheminMenacer;
-    /*public boolean caseMenacer(int x, int y, int proprietaire)
-    {
-        if (proprietaire==1) proprietaire=2;
-        else proprietaire=1;
-        boolean menace=false;
-        for(int i=x;i<plateau.length || x==i-1;i++)
-        {
-            if (plateau[i][y].getProprietaire()==proprietaire)
-            {
-                if(menace) return true;
-                else menace=true;
-                i=0;
-            }
-        }
-        for(int i=y;i<plateau.length && y!=i-1;i++)
-        {
-            if (plateau[x][i].getProprietaire()==proprietaire)
-            {
-                if(menace) return true;
-                else menace=true;
-                i=0;
-            }
-        }
 
-        for(int i=x,j=y;(i<plateau.length && y<plateau.length) || x==i-1;i++)
-        {
-            if (plateau[i][y].getProprietaire()==proprietaire)
-            {
-                if(menace) return true;
-                else menace=true;
-                i=0;
-            }
-        }
-        for(int i=x;i<plateau.length || x==i-1;i++)
-        {
-            if (plateau[i][y].getProprietaire()==proprietaire)
-            {
-                if(menace) return true;
-                else menace=true;
-                i=0;
-            }
-        }
-        return false;
-
-    }*/
 }
