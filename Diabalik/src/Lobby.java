@@ -107,7 +107,8 @@ public class Lobby {
             Console.readCharacter(
                 "Quel action souhaite-tu faire?\n" +
                 "\t[D]eplacer\n" +
-                "\t[P]asser\n");
+                "\t[P]asser\n" +
+                "\t[F]in du Tour\n");
 
         int x = Console.readInt("x="),
             y = Console.readInt("y="),
@@ -121,6 +122,10 @@ public class Lobby {
 
             case 'P':
                 client.println(String.format("passer,%d,%d,%d,%d", x, y, xD, yD));
+                break;
+
+            case 'F':
+                client.println("end_tour");
                 break;
         }
     }
