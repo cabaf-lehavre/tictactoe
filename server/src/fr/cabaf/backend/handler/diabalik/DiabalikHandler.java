@@ -6,7 +6,7 @@ import fr.cabaf.backend.handler.GameClientHandler;
 /**
  * Created by Brieuc de Tappie on 10/01/2015.
  */
-public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> implements ModeleDiabalikHandler{
+public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> {
 
     ModeleDiabalikSimple diabalik;
     int nextJoueurId=1;
@@ -35,7 +35,7 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
     }
 
     @Override
-    public void onPlayerReceive(fr.cabaf.frontend.Client client, DiabalikHandlerContext ctx, String msg) {
+    public void onPlayerReceive(Client client, DiabalikHandlerContext ctx, String msg) {
         if (msg.startsWith("deplacer")) {
             if (moveJoueurCurrent < 2) {
 
@@ -71,7 +71,7 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
             passTurn();
         } else {
             // he still can play, notifies it then :)
-            client.println("play");
+            client.sendLine("play");
         }
     }
 
@@ -93,7 +93,7 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
         }
 
     @Override
-    public void onGameTurnEnding(fr.cabaf.frontend.Client client, DiabalikHandlerContext ctx) {
+    public void onGameTurnEnding(Client client, DiabalikHandlerContext ctx) {
         broadcast("end_turn," + ctx.getJoueurId());
     }
 }
