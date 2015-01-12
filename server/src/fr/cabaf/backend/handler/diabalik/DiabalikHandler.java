@@ -10,6 +10,9 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
 
     ModeleDiabalikSimple diabalik;
     int nextJoueurId=1;
+    int moveJoueurCurrent = 0;
+    boolean aPasserCurrent = false;
+
     @Override
     protected DiabalikHandlerContext onPlayerConnection(Client client) {
         int  joueurId = nextJoueurId;
@@ -34,21 +37,47 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
 
     @Override
     public void onPlayerReceive(fr.cabaf.frontend.Client client, DiabalikHandlerContext ctx, String msg) {
-        if (msg.startsWith("deplacer") || msg.startsWith("cocher") )
+        if (msg.startsWith("deplacement"))
         {
+            if(moveJoueurCurrent<2) {
 
-        }
-        /*if (msg.startsWith("cocher")) {
-            String[] args = msg.split(",");
+                String[] args = msg.split(",");
 
-            int x = Integer.parseInt(args[1]),
-                    y = Integer.parseInt(args[2]);
-
-            if(diabalik.cocher(x, y, ctx.getJoueurId())) {
-                broadcast("cocher," + x + "," + y + "," + ctx.getJoueurId().ordinal());
-                passTurn();
+                int x  = Integer.parseInt(args[1]),
+                    y  = Integer.parseInt(args[2]),
+                    xD = Integer.parseInt(args[3]),
+                    yD = Integer.parseInt(args[4]);
+                if(diabalik.deplacer(x,y,xD,yD,ctx.getJoueurId()))
+                {
+                    moveJoueurCurrent++;
+                    broadcast("deplacement," + x + "," + y + "," + xD + "," + yD + "," + ctx.getJoueurId());
+                }
             }
-        }*/
+        }
+        else if(msg.startsWith("passe"))
+        {
+            if(!aPasserCurrent) {
+
+                String[] args = msg.split(",");
+
+                int x  = Integer.parseInt(args[1]),
+                        y  = Integer.parseInt(args[2]),
+                        xD = Integer.parseInt(args[3]),
+                        yD = Integer.parseInt(args[4]);
+                if(diabalik.passe(x,y,xD,yD,ctx.getJoueurId()))
+                {
+                    aPasserCurrent=true;
+                    broadcast("passe," + x + "," + y + "," + xD + "," + yD + "," + ctx.getJoueurId());
+                }
+            }
+        }
+        if (msg.startsWith("end_tour") || moveJoueurCurrent==2 && aPasserCurrent==true )
+        {
+            moveJoueurCurrent=0;
+            aPasserCurrent=false;
+            passTurn();
+        }
+
     }
 
     @Override

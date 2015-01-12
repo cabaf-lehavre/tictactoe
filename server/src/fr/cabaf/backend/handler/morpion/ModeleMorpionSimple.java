@@ -91,7 +91,7 @@ public class ModeleMorpionSimple implements ModeleMorpion {
 	}
 
 	public boolean estTerminee() {
-		return gagnant != null || this.nbCoups > ModeleMorpion.TAILLE * ModeleMorpion.TAILLE;
+		return gagnant != null || this.nbCoups-1 > ModeleMorpion.TAILLE * ModeleMorpion.TAILLE;
 	}
 
 	@Override
