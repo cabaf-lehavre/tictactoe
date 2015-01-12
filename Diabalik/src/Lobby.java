@@ -88,6 +88,9 @@ public class Lobby {
                 diabalik.passe(x, y, xD, yD, prop);
             } else if (line.equalsIgnoreCase("play")) {
                 play(client);
+            } else if (line.equalsIgnoreCase("invalid")) {
+                Console.println("Cette opération est invalide");
+                continue;
             } else if (line.startsWith("end_game")) {
                 winner = Integer.parseInt(line.substring("end_game".length() + 1));
                 break; // avoid printing game
