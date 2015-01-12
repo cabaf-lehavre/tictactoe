@@ -111,7 +111,11 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
     }
 
     public int getGagnant() {
-        return 0;
+        if(aGagne(1))
+            return 1;
+        else if(aGagne(2))
+            return 2;
+        else return 0;
     }
 //    public boolean cheminMenacer;
     /*public boolean caseMenacer(int x, int y, int proprietaire)
