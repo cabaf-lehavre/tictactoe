@@ -1,8 +1,10 @@
 /**
  * Created by Cyril Alves on 09/01/2015.
  */
-import javax.swing.*;
+
 import java.awt.*;
+import java.util.Scanner;
+
 
 public class DiabalikSwing {
 
@@ -10,7 +12,7 @@ public class DiabalikSwing {
     private char action;
 
     public DiabalikSwing() {
-        this(new ModeleDiabalikSimple() );
+        modele=new ModeleDiabalikSimple();
     }
 
 
@@ -34,11 +36,14 @@ public class DiabalikSwing {
                 "           Passer  [P]"+"\n"+
                 "           Fin de tour[F]");
 
-        Clavier.lire_char(action);
+        Scanner sc = new Scanner(System.in);
+        action=sc.next().charAt(0);
+
+        networkModelDiabalik.setListener(modele);
 
         switch (action)
         {
-            case 'D': modele.deplacer (2,2,2,2,2); break;
+            case 'D': modele.deplacer(2,2,2,2,2); break;
             case 'P': modele.passe (2,2,2,2,2); break;
             case 'F': modele.changerTour(networkModelDiabalik.getJoueur()); break;
         }

@@ -32,7 +32,7 @@ public class Lobby extends JFrame implements ActionListener {
         ctnr.add(panel);
         ctnr.add(connect);
 
-        setTitle("Morpion");
+        setTitle("Diaballik");
         setSize(200, 100);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,7 +84,7 @@ public class Lobby extends JFrame implements ActionListener {
                     // TODO couldnt join the game
                 }
 
-                new DiabalikSwing(new NetworkModelDiabalik(client, joueur));
+                //new DiabalikSwing(new NetworkModelDiabalik(client, joueur));
                 status.dispose();
             } catch (IOException e) {
                 status.setText(e.getLocalizedMessage());

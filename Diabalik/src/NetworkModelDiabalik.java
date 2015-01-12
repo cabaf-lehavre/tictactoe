@@ -25,7 +25,7 @@ public class NetworkModelDiabalik extends Thread {
             int yD = Integer.parseInt(args[4]);
             int j = Integer.parseInt(args[5]);
 
-            listener.passe(x, y,yD,xD,j);
+            listener.passe(x,y,yD,xD,j);
         }
 
         if (args[0].equalsIgnoreCase("deplacement")) {
@@ -65,14 +65,13 @@ public class NetworkModelDiabalik extends Thread {
     }
 
 
-    public void envPasse(int x, int y,int xD,int yD) {
-        client.println("passe," + x + "," + y+","+xD+","+yD);
+    public void envPasse(int x, int y,int xD,int yD,int j) {
+        client.println("passe," + x + "," + y+","+xD+","+yD+","+j);
     }
 
-    public void envDeplacer(int x, int y,int xD,int yD) {
-        client.println("deplacement," + x + "," + y+","+xD+","+yD);
+    public void envDeplacer(int x, int y,int xD,int yD,int j) {
+        client.println("deplacement," + x + "," + y+","+xD+","+yD+","+j);
     }
-
 
     public void recommencer() {
 
