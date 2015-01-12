@@ -47,7 +47,7 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> {
                         yD = Integer.parseInt(args[4]);
                 if (diabalik.deplacer(x, y, xD, yD, ctx.getJoueurId())) {
                     moveJoueurCurrent++;
-                    broadcast("deplacement," + x + "," + y + "," + xD + "," + yD + "," + ctx.getJoueurId());
+                    broadcast("deplacer," + x + "," + y + "," + xD + "," + yD + "," + ctx.getJoueurId());
                 }
             }
         } else if (msg.startsWith("passer")) {
@@ -61,7 +61,7 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> {
                         yD = Integer.parseInt(args[4]);
                 if (diabalik.passe(x, y, xD, yD, ctx.getJoueurId())) {
                     aPasserCurrent = true;
-                    broadcast("passe," + x + "," + y + "," + xD + "," + yD + "," + ctx.getJoueurId());
+                    broadcast("passer," + x + "," + y + "," + xD + "," + yD + "," + ctx.getJoueurId());
                 }
             }
         }
