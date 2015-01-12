@@ -1,98 +1,127 @@
-/**
- * Created by Cyril Alves on 09/01/2015.
- */
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class Lobby extends JFrame implements ActionListener {
-    private final JTextField address = new JTextField();
-    private final JTextField port = new JTextField();
-    private final JButton connect = new JButton();
-
-
-    public void display() {
-        connect.addActionListener(this);
-        connect.setText("Se Connecter");
-
-        address.setText("localhost");
-        port.setText("5555");
-
-        JPanel panel = new JPanel(new GridLayout(2, 2));
-        panel.add(new JLabel("Adresse"));
-        panel.add(address);
-        panel.add(new JLabel("Port"));
-        panel.add(port);
-
-        Container ctnr = getContentPane();
-        ctnr.setLayout(new FlowLayout(FlowLayout.CENTER));
-        ctnr.add(panel);
-        ctnr.add(connect);
-
-        setTitle("Diaballik");
-        setSize(200, 100);
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent evt) {
-        if (evt.getSource() != connect) {
-            return;
-        }
-
-        String address = this.address.getText();
-        int port = Integer.parseInt(this.port.getText());
-
-        StatusWindow w = new StatusWindow("Connection...");
-        new ConnectThread(address, port, w).start();
-        this.dispose();
-    }
-
-    static class ConnectThread extends Thread {
-        private final String address;
-        private final int port;
-        private final StatusWindow status;
-
-        ConnectThread(String address, int port, StatusWindow status) {
-            this.address = address;
-            this.port = port;
-            this.status = status;
-        }
-
-        @Override
-        public void run() {
-            try {
-                Client client = new Client(address, port);
-                int joueur = 0;
-
-                BufferedReader reader = client.createBufferedReader();
-                while (true) {
-                    String str = reader.readLine();
-
-                    if (str.startsWith("joueur_id")) {
-                        int index = Integer.parseInt(str.substring("joueur_id".length() + 1));
-                        joueur = index;
-                        status.setText("Démarrage...");
-                        client.println("enter");
-                    } else if (str.startsWith("start_game")) {
-                        break;
-                    }
-                    // TODO couldnt join the game
-                }
-
-                //new DiabalikSwing(new NetworkModelDiabalik(client, joueur));
-                status.dispose();
-            } catch (IOException e) {
-                status.setText(e.getLocalizedMessage());
-            }
-        }
-    }
+public class Lobby {
 
     public static void main(String[] args) {
-        new Lobby().display();
+        try {
+            final Client client = connect();
+
+            int id = initGame(client);
+            if (id == -1) {
+                throw Console.quit("something went wrong, game started before I got my ID");
+            }
+
+            int winner = playGame(client, id);
+
+            if (winner == id) {
+                Console.println("You won :-)");
+            } else {
+                Console.println("You lose :-(");
+            }
+        } catch (IOException e) {
+            throw Console.quit(e.getLocalizedMessage());
+        }
+    }
+
+    public static Client connect() throws IOException {
+        final String address = Console.readString("Entrez l'IP du serveur");
+        final int port = Console.readInt("Entrez le port du serveur");
+
+        final Client client;
+        try {
+            client = new Client(address, port);
+        } catch (IOException e) {
+            throw Console.quit(e.getLocalizedMessage());
+        }
+        return client;
+    }
+
+    public static int initGame(Client client) throws IOException {
+        final BufferedReader reader = client.createBufferedReader();
+
+        int id = -1;
+
+        String line;
+        while ((line = reader.readLine()) != null) {
+            Console.println("RECV " + line);
+            if (line.startsWith("joueur_id")) {
+                id = Integer.parseInt(line.substring("joueur_id".length() + 1));
+                client.println("enter");
+            } else if (line.equalsIgnoreCase("start_game")) {
+                break;
+            }
+        }
+        return id;
+    }
+
+    public static int playGame(Client client, int id) throws IOException {
+        final DiabalikModele diabalik = new DiabalikModele();
+        final BufferedReader reader = client.createBufferedReader();
+
+        int winner = -1;
+
+        String line;
+        String[] args;
+        while ((line = reader.readLine()) != null) {
+            Console.println("RECV " + line);
+
+            if (line.startsWith("deplacer")) {
+                args = line.split(",");
+
+                int x = Integer.parseInt(args[1]),
+                    y = Integer.parseInt(args[2]),
+                    xD = Integer.parseInt(args[3]),
+                    yD = Integer.parseInt(args[4]),
+                    prop = Integer.parseInt(args[5]);
+
+                diabalik.deplacer(x, y, xD, yD, prop);
+            } else if (line.startsWith("passe")) {
+                args = line.split(",");
+
+                int x = Integer.parseInt(args[1]),
+                    y = Integer.parseInt(args[2]),
+                    xD = Integer.parseInt(args[3]),
+                    yD = Integer.parseInt(args[4]),
+                    prop = Integer.parseInt(args[5]);
+
+                diabalik.passe(x, y, xD, yD, prop);
+            } else if (line.startsWith("start_turn")) {
+                int playing = Integer.parseInt(line.substring("start_turn".length() + 1));
+                if (playing == id) {
+                    play(client);
+                }
+            } else if (line.startsWith("end_game")) {
+                winner = Integer.parseInt(line.substring("end_game".length() + 1));
+                break; // avoid printing game
+            }
+
+            Console.println(diabalik.toString());
+        }
+
+        return winner;
+    }
+
+    public static void play(Client client) {
+        char action =
+            Console.readCharacter(
+                "Quel action souhaite-tu faire?\n" +
+                "\t[D]eplacer\n" +
+                "\t[P]asser\n");
+
+        int x = Console.readInt("x="),
+            y = Console.readInt("y="),
+            xD = Console.readInt("xD="),
+            yD = Console.readInt("yD=");
+
+        switch (action) {
+            case 'D':
+                client.println(String.format("deplacer,%d,%d,%d,%d", x, y, xD, yD));
+                break;
+
+            case 'P':
+                client.println(String.format("passer,%d,%d,%d,%d", x, y, xD, yD));
+                break;
+        }
     }
 }

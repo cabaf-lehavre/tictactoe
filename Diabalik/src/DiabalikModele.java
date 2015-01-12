@@ -1,11 +1,10 @@
 /**
- * Created by Cyril Alves on 09/01/2015.
+ * @author Brieuc DE TAPPIE INFOC1
  */
-
-public class ModeleDiabalikSimple {
+public class DiabalikModele {
 
     Case[][] plateau = new Case[7][7];
-    public ModeleDiabalikSimple()
+    public DiabalikModele()
     {
         for (int i=0;i<plateau.length;i++)
             for (int j=0;j<plateau[0].length;j++) plateau[i][j]=new Case();
