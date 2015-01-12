@@ -96,7 +96,7 @@ public abstract class GameClientHandler<Ctx extends BaseGameContext> implements 
 
     @Override
     public final void onException(Exception e) {
-
+        e.printStackTrace();
     }
 
     protected final void passTurn() {
