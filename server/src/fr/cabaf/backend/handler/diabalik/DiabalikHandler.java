@@ -81,6 +81,7 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> {
 
     @Override
     protected void onGameStarting() {
+        //diabalik = new ModeleDiabalikSimple(new File("your-file"));
         diabalik = new ModeleDiabalikSimple();
         broadcast("start_game");
     }

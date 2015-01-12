@@ -2,8 +2,14 @@ package fr.cabaf.backend.handler.diabalik;
 
 import fr.cabaf.backend.Client;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
- * Created by db131357 on 07/01/15.
+ * @author Brieuc DE TAPPIE INFOC2
+ * @author Antoine CHAUVIN INFOB1
  */
 public class ModeleDiabalikSimple implements ModeleDiabalik {
 
@@ -26,6 +32,36 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
             //plateau[8][i].setSupport(true);
         }
         plateau[6][3].setBalle(true);
+    }
+
+    public ModeleDiabalikSimple(File file) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            for (int x = 0; x < 7; x++) {
+                line = reader.readLine();
+
+                for (int y = 0; y < 7; y++) {
+                    Case c = new Case();
+                    plateau[x][y] = c;
+
+                    switch (line.charAt(y)) {
+                        case '1':
+                            c.setProprietaire(1);
+                            break;
+                        case '2':
+                            c.setProprietaire(2);
+                            break;
+                        case 'x':
+                            c.setBalle(true);
+                            break;
+                    }
+                }
+            }
+            reader.close();
+        } catch (IOException ignored) {
+
+        }
     }
 
     public String toString()
