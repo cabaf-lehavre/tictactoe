@@ -1,5 +1,7 @@
 package fr.cabaf.backend.handler.diabalik;
 
+import fr.cabaf.backend.Client;
+
 /**
  * Created by db131357 on 07/01/15.
  */
@@ -102,7 +104,7 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
 
     @Override
     public boolean estTerminee() {
-        return aGagne(2);
+        return aGagne(1) || aGagne(2);
     }
 //    public boolean cheminMenacer;
     /*public boolean caseMenacer(int x, int y, int proprietaire)

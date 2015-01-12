@@ -15,8 +15,7 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
 
     @Override
     protected DiabalikHandlerContext onPlayerConnection(Client client) {
-        int  joueurId = nextJoueurId;
-        nextJoueurId = nextJoueurId++;
+        int joueurId = client.getId();
 
         System.out.println("nouveau client " + joueurId);
 
@@ -82,6 +81,6 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
 
     @Override
     public void onGameTurnEnding(fr.cabaf.frontend.Client client, DiabalikHandlerContext ctx) {
-
+        broadcast("end_turn," + ctx.getJoueurId());
     }
 }
