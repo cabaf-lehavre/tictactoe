@@ -110,17 +110,24 @@ public class Lobby {
                 "\t[P]asser\n" +
                 "\t[F]in du Tour\n");
 
-        int x = Console.readInt("x="),
-            y = Console.readInt("y="),
-            xD = Console.readInt("xD="),
-            yD = Console.readInt("yD=");
+        int x, y, xD, yD;
 
         switch (action) {
             case 'D':
+                x = Console.readInt("x=");
+                y = Console.readInt("y=");
+                xD = Console.readInt("xD=");
+                yD = Console.readInt("yD=");
+
                 client.println(String.format("deplacer,%d,%d,%d,%d", x, y, xD, yD));
                 break;
 
             case 'P':
+                x = Console.readInt("x=");
+                y = Console.readInt("y=");
+                xD = Console.readInt("xD=");
+                yD = Console.readInt("yD=");
+
                 client.println(String.format("passer,%d,%d,%d,%d", x, y, xD, yD));
                 break;
 
