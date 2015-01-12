@@ -72,7 +72,12 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
         }
     }
 
-        protected void onGameEnding() {
+    @Override
+    protected void onGameStarting() {
+        broadcast("start_game");
+    }
+
+    protected void onGameEnding() {
             broadcast("end_game," + diabalik.getGagnant());
         }
 
