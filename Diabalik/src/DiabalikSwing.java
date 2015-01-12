@@ -23,6 +23,9 @@ public class DiabalikSwing {
         this(new ModeleDiabalikSimple());
     }
 
+    public DiabalikSwing(NetworkModelDiabalik networkModelDiabalik) {
+    }
+
     public DiabalikSwing(ModeleDiabalikSimple modele) {
 
         this.modele = modele;
