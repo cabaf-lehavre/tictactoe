@@ -67,7 +67,7 @@ public class MorpionHandler extends GameClientHandler<MorpionHandlerContext> {
     }
 
     @Override
-    protected void onGameTurnEnding(Client client, MorpionHandlerContext ctx) {
+            protected void onGameTurnEnding(Client client, MorpionHandlerContext ctx) {
         broadcast("end_turn," + ctx.getJoueurId().ordinal());
     }
 }

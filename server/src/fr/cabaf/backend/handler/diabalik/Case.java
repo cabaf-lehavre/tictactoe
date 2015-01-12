@@ -5,9 +5,9 @@ package fr.cabaf.backend.handler.diabalik;
  */
 public class Case {
 
-        private int proprietaire=0; //0: rien, 1:J1 2:J2
+        private int proprietaire; //0: rien, 1:J1 2:J2
         private boolean /*estSupport=false,*/ estBalle=false;
-        public Case(){}
+        public Case(){proprietaire=0;}
         public void setProprietaire(int pro) {proprietaire=pro;}
         //public void setSupport(boolean bool) {estSupport=bool ;}
         public void setBalle(boolean bool)  {estBalle=bool   ;}

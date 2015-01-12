@@ -7,7 +7,7 @@ public interface ModeleDiabalik {
 
 
     int TAILLE = 7;
-
+    public boolean estTerminee();
     public boolean deplacer(int x,int y,int xD, int yD,int proprietaire);
 
     public boolean passe(int x,int y, int xD,int yD, int propritetaire);

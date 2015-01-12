@@ -99,7 +99,12 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
         }
         return false;
     }
-    public boolean cheminMenacer;
+
+    @Override
+    public boolean estTerminee() {
+        return false;
+    }
+//    public boolean cheminMenacer;
     /*public boolean caseMenacer(int x, int y, int proprietaire)
     {
         if (proprietaire==1) proprietaire=2;
