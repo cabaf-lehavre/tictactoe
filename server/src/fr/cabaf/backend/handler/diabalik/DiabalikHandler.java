@@ -36,7 +36,7 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
 
     @Override
     public void onPlayerReceive(fr.cabaf.frontend.Client client, DiabalikHandlerContext ctx, String msg) {
-        if (msg.startsWith("deplacement")) {
+        if (msg.startsWith("deplacer")) {
             if (moveJoueurCurrent < 2) {
 
                 String[] args = msg.split(",");
@@ -50,7 +50,7 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
                     broadcast("deplacement," + x + "," + y + "," + xD + "," + yD + "," + ctx.getJoueurId());
                 }
             }
-        } else if (msg.startsWith("passe")) {
+        } else if (msg.startsWith("passer")) {
             if (!aPasserCurrent) {
 
                 String[] args = msg.split(",");
