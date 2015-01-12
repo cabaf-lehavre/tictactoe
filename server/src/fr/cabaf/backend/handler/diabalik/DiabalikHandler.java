@@ -69,6 +69,9 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
             moveJoueurCurrent = 0;
             aPasserCurrent = false;
             passTurn();
+        } else {
+            // he still can play, notifies it then :)
+            client.println("play");
         }
     }
 
@@ -84,6 +87,9 @@ public class DiabalikHandler extends GameClientHandler<DiabalikHandlerContext> i
         @Override
         protected void onGameTurnStarting(Client client, DiabalikHandlerContext ctx) {
             broadcast("start_turn," + ctx.getJoueurId());
+
+            // notifies the current player that he can play
+            client.sendLine("play");
         }
 
     @Override

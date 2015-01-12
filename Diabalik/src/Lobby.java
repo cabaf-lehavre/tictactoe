@@ -86,11 +86,8 @@ public class Lobby {
                     prop = Integer.parseInt(args[5]);
 
                 diabalik.passe(x, y, xD, yD, prop);
-            } else if (line.startsWith("start_turn")) {
-                int playing = Integer.parseInt(line.substring("start_turn".length() + 1));
-                if (playing == id) {
-                    play(client);
-                }
+            } else if (line.equalsIgnoreCase("play")) {
+                play(client);
             } else if (line.startsWith("end_game")) {
                 winner = Integer.parseInt(line.substring("end_game".length() + 1));
                 break; // avoid printing game
