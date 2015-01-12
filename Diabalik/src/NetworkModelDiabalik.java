@@ -38,6 +38,12 @@ public class NetworkModelDiabalik extends Thread {
             listener.deplacer(x,y,yD,xD,j);
         }
 
+        if (args[0].equalsIgnoreCase("end_tour")) {
+            int j = Integer.parseInt(args[1]);
+
+            listener.changerTour(j);
+        }
+
         if (args[0].equalsIgnoreCase("end_game")) {
             int j = Integer.parseInt(args[1]);
 

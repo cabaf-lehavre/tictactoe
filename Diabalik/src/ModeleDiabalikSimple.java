@@ -100,4 +100,8 @@ public class ModeleDiabalikSimple {
     }
     public boolean cheminMenacer;
 
+    public int changerTour(int j) {
+        if(j==1){return 2;}
+        else{return 1;}
+    }
 }
