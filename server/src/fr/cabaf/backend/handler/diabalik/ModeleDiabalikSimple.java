@@ -106,6 +106,10 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
     public boolean estTerminee() {
         return aGagne(1) || aGagne(2);
     }
+
+    public int getGagnant() {
+        return 0;
+    }
 //    public boolean cheminMenacer;
     /*public boolean caseMenacer(int x, int y, int proprietaire)
     {
