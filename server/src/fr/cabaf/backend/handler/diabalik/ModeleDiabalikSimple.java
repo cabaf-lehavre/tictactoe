@@ -91,13 +91,16 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
     public boolean aGagne(int proprietaire)
     {
         int ligne;
-        if(proprietaire==1) ligne=plateau.length;
+        if(proprietaire==1) ligne=plateau.length-1;
         else if(proprietaire==2) ligne=0;
         else return false;
         //On considere qu'il y a autant de ligne que de colonne
-        for(int i=0;i<ligne;i++)
+        for(int i=0;i<plateau.length;i++)
         {
-            if(plateau[ligne][i].getBalle()) return true;
+            Case it = plateau[ligne][i];
+            if(it.getBalle() && it.getProprietaire() == proprietaire) {
+                return true;
+            }
         }
         return false;
     }
