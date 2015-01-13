@@ -98,8 +98,7 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
     {
 
         //TODO :Verification que c'est dans le tableau
-        if(x<0 || y<0 || xD<0 || yD<0|| y>plateau.length|| x>plateau.length|| yD>plateau.length|| yD>plateau.length) return false;
-        if(plateau[xD][yD].getProprietaire()!=0 || plateau[x][y].getProprietaire()!=proprietaire) return false;
+        if(!valeurOK(x,y,xD, yD,proprietaire)) return false;
         if(plateau[x][y].getBalle()) return false;
         if(plateau[xD][yD].getProprietaire()==0)
         {
@@ -113,16 +112,93 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
         }
         return false;
     }
-    public boolean passe(int x,int y, int xD,int yD, int propritetaire)
+    public boolean passe(int x,int y, int xD,int yD, int proprietaire)
     {
-        if(!plateau[x][y].getBalle()) return false;
-        if(x<0 || y<0 || xD<0 || yD<0|| y>plateau[0].length|| x>plateau.length|| xD>plateau.length|| yD>plateau[0].length) return false;
-        if(plateau[xD][yD].getProprietaire()!=propritetaire || plateau[x][y].getProprietaire()!=propritetaire) return false;
-        if(xD==x || yD==y || xD-x==yD-y) {
+        if(!valeurOK(x,y,xD, yD,proprietaire)) return false;
+        if(plateau[xD][yD].getProprietaire()!=proprietaire || plateau[x][y].getProprietaire()!=proprietaire) return false;
+        if(xD==x || yD==y || xD-x==yD-y && !trajetMenace(x,y,xD,yD,proprietaire)) {
             plateau[x][y].setBalle(false);
             plateau[xD][yD].setBalle(true);
         }
         return true;
+    }
+    private boolean trajetMenace(int x,int y, int xD,int yD, int proprietaire){
+        if(!valeurOK(x,y,xD, yD,proprietaire)) return false;
+        int proprietaireEnnemi;
+        if (proprietaire==1) proprietaireEnnemi=2;
+        else proprietaireEnnemi=1;
+
+        if(xD == x) {
+            if(yD>y) {
+                for (int i = y; i < yD; i++) {
+                    if (plateau[xD][i].getProprietaire() == proprietaireEnnemi) {
+                        return true;
+                    }
+                }
+            }
+            if(yD<y) {
+                for (int i = yD; i < y; i++) {
+                    if (plateau[xD][i].getProprietaire() == proprietaireEnnemi) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        if(yD == y) {
+            if(xD>x) {
+                for (int i = x; i < xD; i++) {
+                    if (plateau[i][y].getProprietaire() == proprietaireEnnemi) {
+                        return true;
+                    }
+                }
+            }
+            if(xD<x) {
+                for (int i = xD; i < x; i++) {
+                    if (plateau[i][y].getProprietaire() == proprietaireEnnemi) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        if(xD-x==yD-y)
+        {
+            if(xD>x && yD>y) {
+                for (int i = x, j = y; i < xD && j < yD; i++, j++) {
+                    if (plateau[i][j].getProprietaire() == proprietaireEnnemi) {
+                        return true;
+                    }
+                }
+            }
+            if(xD>x && yD<y) {
+                for (int i = x, j = y; i < xD && j > yD; i++, j--) {
+                    if (plateau[i][j].getProprietaire() == proprietaireEnnemi) {
+                        return true;
+                    }
+                }
+            }
+            if(xD<x && yD<y) {
+                for (int i = xD, j = yD; i < x && j < y; i++, j++) {
+                    if (plateau[i][j].getProprietaire() == proprietaireEnnemi) {
+                        return true;
+                    }
+                }
+            }
+            if(xD<x && yD>y) {
+                for (int i = x, j = y; i > xD && j < yD; i--, j++) {
+                    if (plateau[i][j].getProprietaire() == proprietaireEnnemi) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    public boolean valeurOK(int x,int y, int xD,int yD, int proprietaire){
+        if(!plateau[x][y].getBalle()) return false;
+        if(x<0 || y<0 || xD<0 || yD<0|| y>plateau[0].length|| x>plateau.length|| xD>plateau.length|| yD>plateau[0].length) return false;
+        else return true;
     }
     public boolean aGagne(int proprietaire)
     {
