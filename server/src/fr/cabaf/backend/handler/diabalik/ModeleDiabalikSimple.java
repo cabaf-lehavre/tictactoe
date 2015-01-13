@@ -216,10 +216,107 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
         }
         return false;
     }
+    public boolean antiJeu(int proprietaire){
+        int x=-1,y=-1,oldX=-1,oldY=-1;
+        int[][] tabVoisin;
+        int proprietaireEnnemi;
+        if (proprietaire==1) proprietaireEnnemi=2;
+        else proprietaireEnnemi=1;
+        int cptVoisin=0;
+        int cptAdv=0;
+        for(int i=0;i<6;i++) {
+            if (plateau[i][0].getProprietaire() == proprietaire){
+                x=i;
+                y=0;
+            }
+        }
+        if(x==-1) return false;
+        while(cptVoisin!=6){
+            tabVoisin=caseVoisine(x,y);
+            if (plateau[tabVoisin[1][0]][tabVoisin[1][1]].getProprietaire()==proprietaire)
+            {
+                cptVoisin++;
+
+            }
+            for(int i=1;i<4;i++)
+            {
+                x=tabVoisin[i][0];
+                y=tabVoisin[i][1];
+                if (x!=-1 && y !=-1 &&  plateau[x][y].getProprietaire()==proprietaire) {
+                    cptVoisin++;
+                    break;
+                }
+                else x=-1;
+            }
+            if(x==-1) break;
+            int xTmp,yTmp;
+            for(int i=0;i<8;i=i+4)
+            {
+                xTmp=tabVoisin[i][0];
+                yTmp=tabVoisin[i][1];
+                if (xTmp!=-1 && y !=-1 && plateau[xTmp][yTmp].getProprietaire()==proprietaireEnnemi) {
+                    cptAdv++;
+                }
+            }
+
+
+        }
+        System.out.println(cptVoisin +" " + cptAdv);
+        if(cptVoisin<6 || cptAdv < 3)return false;
+        else return true;
+    }
+    public int[][] caseVoisine(int x, int y){
+        int[][] tabVal = new int[8][2];
+        for(int i=0;i<8;i++){
+            try{
+            switch (i)
+            {
+                case 0:
+                    tabVal[i][0]=x+1;
+                    tabVal[i][1]=y;
+                    break;
+                case 1:
+                    tabVal[i][0]=x+1;
+                    tabVal[i][1]=y+1;
+                    break;
+                case 2:
+                    tabVal[i][0]=x;
+                    tabVal[i][1]=y+1;
+                    break;
+                case 3:
+                    tabVal[i][0]=x-1;
+                    tabVal[i][1]=y+1;
+                    break;
+                case 4:
+                    tabVal[i][0]=x-1;
+                    tabVal[i][1]=y;
+                    break;
+                case 5:
+                    tabVal[i][0]=x-1;
+                    tabVal[i][1]=y-1;
+                    break;
+                case 6:
+                    tabVal[i][0]=x;
+                    tabVal[i][1]=y-1;
+                    break;
+                case 7:
+                    tabVal[i][0]=x+1;
+                    tabVal[i][1]=y-1;
+                    break;
+            }
+        }
+            catch(Exception e)
+            {
+
+            }
+
+        }
+        return tabVal;
+    }
 
     @Override
     public boolean estTerminee() {
-        return aGagne(1) || aGagne(2);
+        return aGagne(1) || aGagne(2) || antiJeu(1) || antiJeu(2);
     }
 
     public int getGagnant() {
@@ -227,6 +324,10 @@ public class ModeleDiabalikSimple implements ModeleDiabalik {
             return 1;
         else if(aGagne(2))
             return 2;
+        else if(antiJeu(1))
+            return 2;
+        else if(antiJeu(2))
+            return 1;
         else return 0;
     }
 //    public boolean cheminMenacer;
