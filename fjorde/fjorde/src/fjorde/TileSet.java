@@ -108,7 +108,7 @@ public class TileSet {
         boolean boolCheck[] = new boolean[Tile.CORNERS];
         int nbNeighbour = 0;
         int nbNeighbourCheck = 0;
-
+        boolean noSea=false;
         for (int cptBool = 0; cptBool < Tile.CORNERS; cptBool++) {
             if (tileCurrent.getNeighbour(cptBool) != null) {
                 bool[cptBool] = true;
@@ -126,6 +126,7 @@ public class TileSet {
                 if (intNeighbour == 0) {
                     if (tileCurrent.getNeighbour(intNeighbour).getCorner(4).getSymbol().equals(tileCurrent.getCorner(0).getSymbol()) &&
                             tileCurrent.getNeighbour(intNeighbour).getCorner(3).getSymbol().equals(tileCurrent.getCorner(1).getSymbol())) {
+                        if(!tileCurrent.getNeighbour(intNeighbour).getCorner(4).getSymbol().equals("S")) noSea=true;
                         boolCheck[intNeighbour] = true;
                     } else {
                         boolCheck[intNeighbour] = false;
@@ -134,6 +135,7 @@ public class TileSet {
                 if (intNeighbour == 1) {
                     if (tileCurrent.getNeighbour(intNeighbour).getCorner(5).getSymbol().equals(tileCurrent.getCorner(1).getSymbol()) &&
                             tileCurrent.getNeighbour(intNeighbour).getCorner(4).getSymbol().equals(tileCurrent.getCorner(2).getSymbol())) {
+                        if(!tileCurrent.getNeighbour(intNeighbour).getCorner(4).getSymbol().equals("S")) noSea=true;
                         boolCheck[intNeighbour] = true;
                     } else {
                         boolCheck[intNeighbour] = false;
@@ -142,6 +144,7 @@ public class TileSet {
                 if (intNeighbour == 2) {
                     if (tileCurrent.getNeighbour(intNeighbour).getCorner(0).getSymbol().equals(tileCurrent.getCorner(2).getSymbol()) &&
                             tileCurrent.getNeighbour(intNeighbour).getCorner(5).getSymbol().equals(tileCurrent.getCorner(3).getSymbol())) {
+                        if(!tileCurrent.getNeighbour(intNeighbour).getCorner(4).getSymbol().equals("S")) noSea=true;
                         boolCheck[intNeighbour] = true;
                     } else {
                         boolCheck[intNeighbour] = false;
@@ -151,6 +154,7 @@ public class TileSet {
                     if (tileCurrent.getNeighbour(intNeighbour).getCorner(1).getSymbol().equals(tileCurrent.getCorner(3).getSymbol()) &&
                             tileCurrent.getNeighbour(intNeighbour).getCorner(0).getSymbol().equals(tileCurrent.getCorner(4).getSymbol())) {
                         boolCheck[intNeighbour] = true;
+                        if(!tileCurrent.getNeighbour(intNeighbour).getCorner(4).getSymbol().equals("S")) noSea=true;
                     } else {
                         boolCheck[intNeighbour] = false;
                     }
@@ -159,6 +163,7 @@ public class TileSet {
                     if (tileCurrent.getNeighbour(intNeighbour).getCorner(2).getSymbol().equals(tileCurrent.getCorner(4).getSymbol()) &&
                             tileCurrent.getNeighbour(intNeighbour).getCorner(1).getSymbol().equals(tileCurrent.getCorner(5).getSymbol())) {
                         boolCheck[intNeighbour] = true;
+                        if(!tileCurrent.getNeighbour(intNeighbour).getCorner(4).getSymbol().equals("S")) noSea=true;
                     } else {
                         boolCheck[intNeighbour] = false;
                     }
@@ -167,6 +172,7 @@ public class TileSet {
                     if (tileCurrent.getNeighbour(intNeighbour).getCorner(3).getSymbol().equals(tileCurrent.getCorner(5).getSymbol()) &&
                             tileCurrent.getNeighbour(intNeighbour).getCorner(2).getSymbol().equals(tileCurrent.getCorner(0).getSymbol())) {
                         boolCheck[intNeighbour] = true;
+                        if(!tileCurrent.getNeighbour(intNeighbour).getCorner(4).getSymbol().equals("S")) noSea=true;
                     } else {
                         boolCheck[intNeighbour] = false;
                     }
@@ -180,7 +186,7 @@ public class TileSet {
         }
         if (nbNeighbour == nbNeighbourCheck) {
             if (nbNeighbour<2 )return false;
-            return true;
+            return noSea;
         }
         return false;
     }
